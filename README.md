@@ -21,13 +21,15 @@ A simple flask based web application that lets pet shelters connect with a commu
 
 ---
 
-##  Quick Start
+download the repository and navigate to the PawMate FOLDER path in your command line
+you need to run these commands if you haven't already done so
+- pip install flask
+- pip install requests
+- pip install pip install flask_sqlalchemy
 
-### 1. Clone & Virtualenv
+- After these installations all you need is a Google Maps API Key to use the location functionality
+- navigate to google cloud console and enable an api. You need enable the Geocoding, Distance Matrix and Maps JavaScript APIs. Once you have your API Key you can run the command
+- export GOOGLE_MAPS_API_KEY="YOUR-KEY" #replace YOUR-KEY with your api key
+- after this run the main.py in terminal and the webapp will be launched locally
 
-```bash
-git clone https://github.com/your‑username/pet‑match‑app.git
-cd pet‑match‑app
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+**THIS IS A DEMO**
