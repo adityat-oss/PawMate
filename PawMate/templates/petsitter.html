@@ -1,219 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PawMate - Find Your Perfect Pet</title>
+    <title>PawMate - Meet Available Pets</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#FF9B7D',
+                            DEFAULT: '#FF8B6B',
+                            dark: '#F06236'
+                        },
+                        pastel: {
+                            peach: '#FFD6CC',
+                            purple: '#E6D5FF',
+                            blue: '#D4E5FF',
+                            mint: '#D1FFE3',
+                            yellow: '#FFF3D1'
+                        },
+                        dark: {
+                            base: '#2D2B3F',
+                            lighter: '#363447',
+                            card: '#3C3A4E',
+                            purple: '#4A4668',
+                            text: '#E2E8F0'
+                        },
+                        light: {
+                            base: '#FFF9F5',
+                            card: '#FFFFFF',
+                            text: '#4A4668'
+                        }
+                    },
+                    fontFamily: {
+                        'dynapuff': ['DynaPuff', 'cursive'],
+                        'baloo': ['"Baloo 2"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        .light body {
+            background: linear-gradient(135deg, #FFF9F5 0%, #FFE8E0 100%);
+            color: #4A4668;
+        }
+        .dark body {
+            background: linear-gradient(135deg, #2D2B3F 0%, #363447 100%);
+            color: #E2E8F0;
         }
         .pet-card {
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .light .pet-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .pet-card {
+            background: rgba(60, 58, 78, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .pet-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
-        .filter-sidebar {
-            height: calc(100vh - 80px);
-            position: sticky;
-            top: 80px;
+        .nav-blur {
+            transition: all 0.3s ease;
+        }
+        .light .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .nav-blur {
+            background: rgba(45, 43, 63, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow {
+            transition: text-shadow 0.3s ease;
+        }
+        .light .glow {
+            text-shadow: 0 0 10px rgba(255, 139, 107, 0.3);
+        }
+        .dark .glow {
+            text-shadow: 0 0 10px rgba(255, 139, 107, 0.5);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="nav-blur shadow-sm fixed w-full z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <a href="/" class="text-2xl font-bold text-blue-600">PawMate</a>
-                <div class="space-x-6">
-                    <a href="/adoption_center" class="text-gray-600 hover:text-blue-600">List a Pet</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-600">Help</a>
+                <a href="/" class="text-3xl font-bold text-primary-light dark:text-primary font-dynapuff hover:text-primary transition-colors duration-300 glow">PawMate</a>
+                <div class="flex items-center space-x-6">
+                    <button id="themeToggle" class="p-2 rounded-full bg-pastel-purple/20 dark:bg-dark-purple/20 hover:bg-pastel-purple/30 dark:hover:bg-dark-purple/30 transition-all duration-300">
+                        <svg class="w-6 h-6 hidden dark:block text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <svg class="w-6 h-6 block dark:hidden text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    <a href="/adoption_center" class="text-light-text dark:text-dark-text hover:text-primary transition-colors duration-300 font-baloo">List a Pet</a>
+                    <a href="#" class="text-light-text dark:text-dark-text hover:text-primary transition-colors duration-300 font-baloo">Help</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Filter Sidebar -->
-            <div class="lg:w-1/4">
-                <div class="bg-white rounded-xl shadow-sm p-6 filter-sidebar">
-                    <h2 class="text-xl font-semibold mb-6">Find Your Perfect Pet</h2>
-                    <form method="get" action="{{ url_for('petsitter') }}" class="space-y-6">
-                        <!-- Pet Type Filter -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Pet Type</label>
-                            <div class="flex gap-4">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="pet_type" value="dog" {% if pet_type == 'dog' %}checked{% endif %} class="text-blue-600">
-                                    <span class="ml-2">Dogs</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="pet_type" value="cat" {% if pet_type == 'cat' %}checked{% endif %} class="text-blue-600">
-                                    <span class="ml-2">Cats</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Breed -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Breed</label>
-                            <input name="breed" value="{{ breed }}" 
-                                   class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        </div>
-
-                        <!-- Age Range -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Age (years)</label>
-                            <div class="flex gap-4">
-                                <input type="number" name="age_min" placeholder="Min" min="0" value="{{ age_min }}"
-                                       class="w-1/2 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <input type="number" name="age_max" placeholder="Max" min="0" value="{{ age_max }}"
-                                       class="w-1/2 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </div>
-                        </div>
-
-                        <!-- Size -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
-                            <select name="size" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <option value="">Any Size</option>
-                                <option value="Small" {% if size == 'Small' %}selected{% endif %}>Small</option>
-                                <option value="Medium" {% if size == 'Medium' %}selected{% endif %}>Medium</option>
-                                <option value="Large" {% if size == 'Large' %}selected{% endif %}>Large</option>
-                            </select>
-                        </div>
-
-                        <!-- Care Level -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Care Level</label>
-                            <select name="care_level" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <option value="">Any Level</option>
-                                <option value="Low">Low Maintenance</option>
-                                <option value="Medium">Medium Care</option>
-                                <option value="High">High Attention</option>
-                            </select>
-                        </div>
-
-                        <!-- Location Settings -->
-                        <div class="space-y-4">
-                            <label class="block text-sm font-medium text-gray-700">Location</label>
-                            <div class="space-y-4">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="loc_mode" value="ip" {% if loc_mode!='manual' %}checked{% endif %} 
-                                           class="text-blue-600 focus:ring-blue-500">
-                                    <span class="ml-2">Use my location</span>
-                                </label>
-                                <div class="space-y-2">
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" name="loc_mode" value="manual" {% if loc_mode=='manual' %}checked{% endif %}
-                                               class="text-blue-600 focus:ring-blue-500">
-                                        <span class="ml-2">Enter location</span>
-                                    </label>
-                                    <input name="manual_address" placeholder="City, State or ZIP" value="{{ manual_address }}"
-                                           class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4">
-                                <input name="distance" type="number" min="0" value="{{ distance }}" placeholder="Distance"
-                                       class="w-24 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <select name="distance_unit" class="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="mi" {% if distance_unit!='km' %}selected{% endif %}>Miles</option>
-                                    <option value="km" {% if distance_unit=='km' %}selected{% endif %}>Kilometers</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-                            Apply Filters
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Pet Cards Grid -->
-            <div class="lg:w-3/4">
-                {% if pets %}
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {% for pet in pets %}
-                    <div class="pet-card bg-white rounded-xl shadow-sm overflow-hidden">
-                        <!-- Pet Image (placeholder) -->
-                        <div class="h-48 bg-gray-200 relative">
-                            <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900">{{ pet.name }}</h3>
-                                    <p class="text-gray-600">{{ pet.breed }}</p>
-                                </div>
-                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                                    {{ pet.pet_type }}
-                                </span>
-                            </div>
-
-                            <div class="space-y-2 text-sm text-gray-600">
-                                <div class="flex justify-between">
-                                    <span>Age:</span>
-                                    <span class="font-medium">{{ pet.age }} years</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Size:</span>
-                                    <span class="font-medium">{{ pet.size }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Care Level:</span>
-                                    <span class="font-medium">{{ pet.care_level }}</span>
-                                </div>
-                                {% if pet.distance is not none %}
-                                <div class="flex justify-between text-blue-600">
-                                    <span>Distance:</span>
-                                    <span class="font-medium">{{ "%.1f"|format(pet.distance) }} {{ distance_unit }}</span>
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mt-6 flex gap-4">
-                                <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200">
-                                    Contact Shelter
-                                </button>
-                                <button class="w-12 h-12 flex items-center justify-center rounded-full border-2 border-gray-200 hover:border-red-500 hover:text-red-500 transition-colors duration-200">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="text-center py-12">
-                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No pets found</h3>
-                    <p class="text-gray-600">Try adjusting your filters to find more pets</p>
-                </div>
-                {% endif %}
+    <div class="container mx-auto px-4 pt-24 pb-12">
+        <!-- Header -->
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <div class="float-animation">
+                <h1 class="text-4xl font-bold text-primary-light dark:text-primary mb-4 font-dynapuff glow">Find Your Perfect Pawl 🐾</h1>
+                <p class="text-light-text dark:text-dark-text/90 font-baloo text-lg">Browse through our adorable pets looking for their forever homes</p>
             </div>
         </div>
+
+        <!-- Filter Section -->
+        <div class="max-w-4xl mx-auto mb-12">
+            <form method="GET" class="bg-light-card/80 dark:bg-dark-card/80 backdrop-blur rounded-2xl p-6 shadow-sm border border-black/10 dark:border-white/10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Pet Type</label>
+                        <select name="pet_type" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                            <option value="">All Types</option>
+                            <option value="dog">🐕 Dogs</option>
+                            <option value="cat">🐱 Cats</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Behavior</label>
+                        <select name="behavior" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                            <option value="">Any Behavior</option>
+                            <option value="Calm">🌙 Calm</option>
+                            <option value="Playful">🎈 Playful</option>
+                            <option value="Friendly">💝 Friendly</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Size</label>
+                        <select name="size" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                            <option value="">Any Size</option>
+                            <option value="Small">🐱 Small</option>
+                            <option value="Medium">🐶 Medium</option>
+                            <option value="Large">🐕‍🦺 Large</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full px-6 py-2.5 bg-primary-light dark:bg-primary text-white font-baloo rounded-xl hover:bg-primary transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pet Grid -->
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for pet in pets %}
+                <div class="pet-card rounded-2xl overflow-hidden">
+                    <div class="aspect-w-4 aspect-h-3 bg-pastel-purple/20 dark:bg-dark-purple flex items-center justify-center">
+                        <!-- Image placeholder with gradient -->
+                        <div class="w-full h-48 bg-gradient-to-br from-pastel-purple/30 to-pastel-peach/30 dark:from-dark-purple dark:to-dark-card flex items-center justify-center">
+                            <span class="text-6xl">{{ '🐱' if pet.pet_type == 'cat' else '🐕' }}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold font-dynapuff text-primary-light dark:text-primary glow">{{ pet.name }}</h3>
+                            <span class="px-3 py-1 bg-pastel-{{ 'purple' if pet.pet_type == 'dog' else 'peach' }}/20 dark:bg-dark-purple/20 text-light-text dark:text-dark-text rounded-full text-sm font-baloo">
+                                {{ pet.pet_type.title() }}
+                            </span>
+                        </div>
+                        <div class="space-y-2 mb-6">
+                            <p class="text-light-text/70 dark:text-dark-text/70 font-baloo flex items-center">
+                                <span class="w-5 text-center mr-2">🎈</span>
+                                {{ pet.behavior }}
+                            </p>
+                            <p class="text-light-text/70 dark:text-dark-text/70 font-baloo flex items-center">
+                                <span class="w-5 text-center mr-2">📏</span>
+                                {{ pet.size }}
+                            </p>
+                            <p class="text-light-text/70 dark:text-dark-text/70 font-baloo flex items-center">
+                                <span class="w-5 text-center mr-2">🎨</span>
+                                {{ pet.color }}
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-light-text/60 dark:text-dark-text/60 font-baloo text-sm">{{ pet.address }}</span>
+                            <button onclick="window.location.href='mailto:adoptions@pawmate.com?subject=Interest in {{ pet.name }}'"
+                                    class="px-4 py-2 bg-primary-light dark:bg-primary text-white font-baloo rounded-xl hover:bg-primary transition-all duration-300 text-sm shadow-sm hover:shadow-md">
+                                Meet Me 💝
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if not pets %}
+            <div class="text-center py-16">
+                <div class="text-6xl mb-4">🐾</div>
+                <h3 class="text-2xl font-bold mb-2 font-dynapuff text-primary-light dark:text-primary glow">No Pets Found</h3>
+                <p class="text-light-text/70 dark:text-dark-text/70 font-baloo">Try adjusting your filters to find more furry friends</p>
+            </div>
+            {% endif %}
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="nav-blur border-t mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <p class="text-center text-light-text/60 dark:text-dark-text/60 font-baloo">&copy; 2025 PawMate. Making Tails Wag & Hearts Smile 💗</p>
+        </div>
+    </footer>
+
+    <div class="fixed bottom-6 right-6">
+        <p class="text-xl font-dynapuff bg-light-card/80 dark:bg-dark-card/80 backdrop-blur px-4 py-2 rounded-full shadow-lg text-primary-light dark:text-primary glow">Find Your Pawfect Match ✨</p>
+    </div>
+
+    <script>
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Check for saved theme preference, otherwise use system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+    </script>
 </body>
 </html>

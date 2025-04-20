@@ -26,8 +26,11 @@ def adoption_center():
                   ["name","age","breed","pet_type","behavior",
                    "color","hypoallergenic","size","care_level",
                    "address"]}
-        if not all(fields.values()):
-            flash("All fields required.", "error")
+        
+        # Debug which fields are empty
+        empty_fields = [k for k, v in fields.items() if not v]
+        if empty_fields:
+            flash(f"Missing fields: {', '.join(empty_fields)}", "error")
             return render_template("adoption_center.html")
 
         try:
