@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Petsitter Search</title>
+</head>
+<body>
+  <h1>Find a Pet</h1>
+
+  <form method="get" action="{{ url_for('petsitter') }}">
+    <!-- Breed, Behavior, Care Level, Age -->
+    <label>Breed:
+      <input name="breed" value="{{ breed }}">
+    </label><br>
+
+    <label>Behavior:
+      <input name="behavior" value="{{ behavior }}">
+    </label><br>
+
+    <label>Care Level:
+      <input name="care_level" value="{{ care_level }}">
+    </label><br>
+
+    <label>Age (yrs):
+      <input name="age" type="number" min="0" value="{{ age }}">
+    </label><br>
+
+    <!-- Distance & Unit -->
+    <label>Within:
+      <input name="distance" type="number" min="0" step="1" value="{{ distance }}">
+    </label><br>
+
+    <label>
+      <input type="radio" name="distance_unit" value="mi" {% if distance_unit!='km' %}checked{% endif %}> Miles
+    </label>
+    <label>
+      <input type="radio" name="distance_unit" value="km" {% if distance_unit=='km' %}checked{% endif %}> Kilometers
+    </label><br>
+
+    <!-- Location Mode -->
+    <label>
+      <input type="radio" name="loc_mode" value="ip" {% if loc_mode!='manual' %}checked{% endif %}>
+      Use my IP location
+    </label><br>
+
+    <label>
+      <input type="radio" name="loc_mode" value="manual" {% if loc_mode=='manual' %}checked{% endif %}>
+      Enter address/ZIP:
+    </label>
+    <input name="manual_address" placeholder="Street, City or ZIP" value="{{ manual_address }}"><br>
+
+    <button type="submit">Search Pets</button>
+  </form>
+
+  <h2>Available Pets:</h2>
+  <ul>
+    {% for pet in pets %}
+      <li>
+        <strong>{{ pet.name }}</strong> &mdash; {{ pet.pet_type }}, {{ pet.age }} yrs<br>
+        Breed: {{ pet.breed }} | Behavior: {{ pet.behavior }}<br>
+        Color: {{ pet.color }} | Hypoallergenic: {{ pet.hypoallergenic }}<br>
+        Size: {{ pet.size }} | Care Level: {{ pet.care_level }}<br>
+        Shelter Address: {{ pet.address }}<br>
+        {% if pet.distance is not none %}
+          Distance: {{ "%.2f"|format(pet.distance) }} {{ distance_unit }}
+        {% endif %}
+      </li>
+    {% else %}
+      <li>No matching pets</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
