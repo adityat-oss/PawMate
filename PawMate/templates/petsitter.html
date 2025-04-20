@@ -1,74 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Petsitter Search</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PawMate - Find a Pet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body>
-  <h1>Find a Pet</h1>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+        <nav class="mb-8">
+            <a href="/" class="text-blue-600 hover:text-blue-800 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
+            </a>
+        </nav>
 
-  <form method="get" action="{{ url_for('petsitter') }}">
-    <!-- Breed, Behavior, Care Level, Age -->
-    <label>Breed:
-      <input name="breed" value="{{ breed }}">
-    </label><br>
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">Find a Pet</h1>
 
-    <label>Behavior:
-      <input name="behavior" value="{{ behavior }}">
-    </label><br>
+            <form method="get" action="{{ url_for('petsitter') }}" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Basic Info -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Breed</label>
+                            <input name="breed" value="{{ breed }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
 
-    <label>Care Level:
-      <input name="care_level" value="{{ care_level }}">
-    </label><br>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Behavior</label>
+                            <input name="behavior" value="{{ behavior }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
 
-    <label>Age (yrs):
-      <input name="age" type="number" min="0" value="{{ age }}">
-    </label><br>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Care Level</label>
+                            <input name="care_level" value="{{ care_level }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
 
-    <!-- Distance & Unit -->
-    <label>Within:
-      <input name="distance" type="number" min="0" step="1" value="{{ distance }}">
-    </label><br>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Age (yrs)</label>
+                            <input name="age" type="number" min="0" value="{{ age }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
 
-    <label>
-      <input type="radio" name="distance_unit" value="mi" {% if distance_unit!='km' %}checked{% endif %}> Miles
-    </label>
-    <label>
-      <input type="radio" name="distance_unit" value="km" {% if distance_unit=='km' %}checked{% endif %}> Kilometers
-    </label><br>
+                    <!-- Location Settings -->
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Distance</label>
+                            <div class="flex gap-4">
+                                <input name="distance" type="number" min="0" step="1" value="{{ distance }}" class="w-24 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <div class="flex gap-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="distance_unit" value="mi" {% if distance_unit!='km' %}checked{% endif %} class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2">Miles</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="distance_unit" value="km" {% if distance_unit=='km' %}checked{% endif %} class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2">Kilometers</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
-    <!-- Location Mode -->
-    <label>
-      <input type="radio" name="loc_mode" value="ip" {% if loc_mode!='manual' %}checked{% endif %}>
-      Use my IP location
-    </label><br>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Location Mode</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="loc_mode" value="ip" {% if loc_mode!='manual' %}checked{% endif %} class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2">Use my IP location</span>
+                                </label>
+                                <div class="flex flex-col">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="loc_mode" value="manual" {% if loc_mode=='manual' %}checked{% endif %} class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2">Enter address/ZIP</span>
+                                    </label>
+                                    <input name="manual_address" placeholder="Street, City or ZIP" value="{{ manual_address }}" class="mt-2 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <label>
-      <input type="radio" name="loc_mode" value="manual" {% if loc_mode=='manual' %}checked{% endif %}>
-      Enter address/ZIP:
-    </label>
-    <input name="manual_address" placeholder="Street, City or ZIP" value="{{ manual_address }}"><br>
+                <div class="flex justify-center">
+                    <button type="submit" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Search Pets
+                    </button>
+                </div>
+            </form>
+        </div>
 
-    <button type="submit">Search Pets</button>
-  </form>
-
-  <h2>Available Pets:</h2>
-  <ul>
-    {% for pet in pets %}
-      <li>
-        <strong>{{ pet.name }}</strong> &mdash; {{ pet.pet_type }}, {{ pet.age }} yrs<br>
-        Breed: {{ pet.breed }} | Behavior: {{ pet.behavior }}<br>
-        Color: {{ pet.color }} | Hypoallergenic: {{ pet.hypoallergenic }}<br>
-        Size: {{ pet.size }} | Care Level: {{ pet.care_level }}<br>
-        Shelter Address: {{ pet.address }}<br>
-        {% if pet.distance is not none %}
-          Distance: {{ "%.2f"|format(pet.distance) }} {{ distance_unit }}
-        {% endif %}
-      </li>
-    {% else %}
-      <li>No matching pets</li>
-    {% endfor %}
-  </ul>
+        <!-- Results Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Available Pets</h2>
+            
+            {% if pets %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for pet in pets %}
+                <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold text-gray-900">{{ pet.name }}</h3>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">{{ pet.pet_type }}</span>
+                    </div>
+                    <div class="mt-2 space-y-2 text-gray-600">
+                        <p><span class="font-medium">Age:</span> {{ pet.age }} yrs</p>
+                        <p><span class="font-medium">Breed:</span> {{ pet.breed }}</p>
+                        <p><span class="font-medium">Behavior:</span> {{ pet.behavior }}</p>
+                        <p>
+                            <span class="font-medium">Details:</span> 
+                            {{ pet.color }} • {% if pet.hypoallergenic %}Hypoallergenic{% else %}Not Hypoallergenic{% endif %} • {{ pet.size }}
+                        </p>
+                        <p><span class="font-medium">Care Level:</span> {{ pet.care_level }}</p>
+                        <p class="text-sm text-gray-500"><span class="font-medium">Location:</span> {{ pet.address }}</p>
+                        {% if pet.distance is not none %}
+                        <p class="text-sm text-blue-600 font-medium">
+                            {{ "%.2f"|format(pet.distance) }} {{ distance_unit }} away
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center">No matching pets found</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
