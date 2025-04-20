@@ -63,29 +63,37 @@ def adoption_center():
 @app.route("/petsitter", methods=["GET", "POST"])
 def petsitter():
     # Collect filters
+    pet_type    = request.values.get("pet_type", "").strip()
     breed       = request.values.get("breed", "").strip()
     behavior    = request.values.get("behavior", "").strip()
     care_level  = request.values.get("care_level", "").strip()
-    age_str     = request.values.get("age", "").strip()
+    size        = request.values.get("size", "").strip()
+    age_min_str = request.values.get("age_min", "").strip()
+    age_max_str = request.values.get("age_max", "").strip()
     dist_str    = request.values.get("distance", "").strip()
     unit        = request.values.get("distance_unit", "mi")
-    loc_mode    = request.values.get("loc_mode", "ip")      # 'ip' or 'manual'
+    loc_mode    = request.values.get("loc_mode", "ip")
     manual_addr = request.values.get("manual_address", "").strip()
 
-    age = int(age_str) if age_str.isdigit() else None
+    # Convert numeric filters
+    age_min = int(age_min_str) if age_min_str.isdigit() else None
+    age_max = int(age_max_str) if age_max_str.isdigit() else None
     distance = float(dist_str) if dist_str.replace(".", "", 1).isdigit() else None
 
     # Build SQL query filters
     q = Pet.query
+    if pet_type:   q = q.filter_by(pet_type=pet_type)
     if breed:      q = q.filter_by(breed=breed)
     if behavior:   q = q.filter_by(behavior=behavior)
     if care_level: q = q.filter_by(care_level=care_level)
-    if age is not None: q = q.filter_by(age=age)
+    if size:       q = q.filter_by(size=size)
+    if age_min is not None: q = q.filter(Pet.age >= age_min)
+    if age_max is not None: q = q.filter(Pet.age <= age_max)
     candidates = q.all()
 
     pets = candidates
 
-    # Determine user’s coords for distance filtering
+    # Determine user's coords for distance filtering
     user_lat = user_lng = None
     if loc_mode == "ip":
         ip = request.remote_addr
@@ -118,10 +126,13 @@ def petsitter():
     return render_template(
         "petsitter.html",
         pets=pets,
+        pet_type=pet_type,
         breed=breed,
         behavior=behavior,
         care_level=care_level,
-        age=age_str,
+        size=size,
+        age_min=age_min_str,
+        age_max=age_max_str,
         distance=dist_str,
         distance_unit=unit,
         loc_mode=loc_mode,

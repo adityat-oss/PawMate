@@ -3,130 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PawMate - Adoption Center</title>
+    <title>PawMate - List a Pet for Adoption</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+        .form-section {
+            transition: all 0.3s ease;
+        }
+        .form-section:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen py-8 px-4">
-    <div class="max-w-2xl mx-auto">
-        <nav class="mb-8">
-            <a href="/" class="text-blue-600 hover:text-blue-800 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Home
-            </a>
-        </nav>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="/" class="text-2xl font-bold text-blue-600">PawMate</a>
+                <div class="space-x-6">
+                    <a href="/petsitter" class="text-gray-600 hover:text-blue-600">Find Pets</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Help</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-6">Post a Pet</h1>
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">List Your Pet for Adoption</h1>
+                <p class="text-gray-600">Help your pet find their perfect forever home</p>
+            </div>
 
             {% with msgs = get_flashed_messages(with_categories=true) %}
                 {% for cat, m in msgs %}
-                    <div class="mb-4 p-4 rounded-lg {% if cat == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    <div class="mb-8 p-4 rounded-lg {% if cat == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %} flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {% if cat == 'error' %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            {% else %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            {% endif %}
+                        </svg>
                         {{ m }}
                     </div>
                 {% endfor %}
             {% endwith %}
 
-            <form method="POST" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Basic Info -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                        <input name="name" placeholder="e.g. Bella" required 
-                               class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <form method="POST" class="space-y-8">
+                <!-- Basic Information -->
+                <div class="form-section bg-white rounded-xl shadow-sm p-6 md:p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pet's Name</label>
+                            <input name="name" required placeholder="e.g. Bella"
+                                   class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pet Type</label>
+                            <select name="pet_type" required
+                                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="dog">Dog</option>
+                                <option value="cat">Cat</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Age (years)</label>
+                            <input name="age" type="number" min="0" required
+                                   class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Breed</label>
+                            <input name="breed" required placeholder="e.g. Labrador Retriever"
+                                   class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Age (years)</label>
-                        <input name="age" type="number" min="0" required
-                               class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <!-- Characteristics -->
+                <div class="form-section bg-white rounded-xl shadow-sm p-6 md:p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Characteristics</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Behavior</label>
+                            <select name="behavior" required
+                                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="Calm">Calm</option>
+                                <option value="Playful">Playful</option>
+                                <option value="Friendly">Friendly</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                            <select name="color" required
+                                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="Black">Black</option>
+                                <option value="Brown">Brown</option>
+                                <option value="White">White</option>
+                                <option value="Golden">Golden</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                            <select name="size" required
+                                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="Small">Small</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Large">Large</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Care Level Required</label>
+                            <select name="care_level" required
+                                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
 
+                <!-- Health Information -->
+                <div class="form-section bg-white rounded-xl shadow-sm p-6 md:p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Health Information</h2>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Breed</label>
-                        <input name="breed" placeholder="e.g. Labrador" required
-                               class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                        <select name="pet_type" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>dog</option>
-                            <option>cat</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Behavior</label>
-                        <select name="behavior" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>Calm</option>
-                            <option>Playful</option>
-                            <option>Friendly</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
-                        <select name="color" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>Black</option>
-                            <option>Brown</option>
-                            <option>White</option>
-                            <option>Golden</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Hypoallergenic</label>
-                        <select name="hypoallergenic" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>No</option>
-                            <option>Yes</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Size</label>
-                        <select name="size" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>Small</option>
-                            <option>Medium</option>
-                            <option>Large</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Care Level</label>
-                        <select name="care_level" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option>Low</option>
-                            <option>Medium</option>
-                            <option>High</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Hypoallergenic</label>
+                        <select name="hypoallergenic" required
+                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
                         </select>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
-                    <input name="address" placeholder="123 Main St, Anytown, CA" required
-                           class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <!-- Location -->
+                <div class="form-section bg-white rounded-xl shadow-sm p-6 md:p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Shelter Location</h2>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                        <input name="address" required placeholder="Full street address, City, State, ZIP"
+                               class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <p class="mt-2 text-sm text-gray-500">Please enter your complete address for accurate location matching</p>
+                    </div>
                 </div>
 
+                <!-- Submit -->
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <button type="submit" 
-                            class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                        Post Pet
+                            class="px-8 py-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Post Pet for Adoption
                     </button>
                     <a href="/petsitter" 
-                       class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200 text-center">
-                        Switch to Petsitter View
+                       class="px-8 py-4 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200 text-center">
+                        View Available Pets
                     </a>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <p class="text-center text-gray-600">&copy; 2025 PawMate. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
