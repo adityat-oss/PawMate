@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PawMate - Meet Available Pets</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon2.svg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -101,6 +102,12 @@
         .float-animation {
             animation: float 6s ease-in-out infinite;
         }
+        .logo-svg {
+            transition: filter 0.3s ease;
+        }
+        .dark .logo-svg {
+            filter: brightness(0) invert(1);
+        }
     </style>
 </head>
 <body>
@@ -108,14 +115,16 @@
     <nav class="nav-blur shadow-sm fixed w-full z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <a href="/" class="text-3xl font-bold text-primary-light dark:text-primary font-dynapuff hover:text-primary transition-colors duration-300 glow">PawMate</a>
+                <a href="/" class="flex items-center">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="PawMate" class="h-12 w-auto logo-svg">
+                </a>
                 <div class="flex items-center space-x-6">
                     <button id="themeToggle" class="p-2 rounded-full bg-pastel-purple/20 dark:bg-dark-purple/20 hover:bg-pastel-purple/30 dark:hover:bg-dark-purple/30 transition-all duration-300">
                         <svg class="w-6 h-6 hidden dark:block text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                         <svg class="w-6 h-6 block dark:hidden text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 9.003 0 008.354-5.646z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 9.003 0 0012 21a9.003 9.003 9.003 0 008.354-5.646z"/>
                         </svg>
                     </button>
                     <a href="/adoption_center" class="text-light-text dark:text-dark-text hover:text-primary transition-colors duration-300 font-baloo">List a Pet</a>
@@ -134,9 +143,6 @@
             </div>
         </div>
 
-        <!-- Filter Section -->
-        <div class="max-w-4xl mx-auto mb-12">
-            <form method="GET" class="bg-light-card/80 dark:bg-dark-card/80 backdrop-blur rounded-2xl p-6 shadow-sm border border-black/10 dark:border-white/10">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Search by Name</label>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PawMate - Find Your Fur-ever Friend</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon2.svg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -53,6 +54,12 @@
         .dark body {
             background: linear-gradient(135deg, #2D2B3F 0%, #363447 100%);
             color: #E2E8F0;
+        }
+        .logo-svg {
+            transition: filter 0.3s ease;
+        }
+        .dark .logo-svg {
+            filter: brightness(0) invert(1);
         }
         .hero-card {
             transition: all 0.3s ease;
@@ -115,7 +122,9 @@
     <nav class="nav-blur shadow-sm fixed w-full z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <a href="/" class="text-3xl font-bold text-primary-light dark:text-primary font-dynapuff hover:text-primary transition-colors duration-300 glow">PawMate</a>
+                <a href="/" class="flex items-center">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="PawMate" class="h-12 w-auto logo-svg">
+                </a>
                 <div class="flex items-center space-x-6">
                     <button id="themeToggle" class="p-2 rounded-full bg-pastel-purple/20 dark:bg-dark-purple/20 hover:bg-pastel-purple/30 dark:hover:bg-dark-purple/30 transition-all duration-300">
                         <svg class="w-6 h-6 hidden dark:block text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
