@@ -115,7 +115,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                         <svg class="w-6 h-6 block dark:hidden text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 9.003 0 008.354-5.646z"/>
                         </svg>
                     </button>
                     <a href="/adoption_center" class="text-light-text dark:text-dark-text hover:text-primary transition-colors duration-300 font-baloo">List a Pet</a>
@@ -139,39 +139,75 @@
             <form method="GET" class="bg-light-card/80 dark:bg-dark-card/80 backdrop-blur rounded-2xl p-6 shadow-sm border border-black/10 dark:border-white/10">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Search by Name</label>
+                        <input name="name" placeholder="Pet's name" value="{{ name }}"
+                               class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo placeholder:text-light-text/40 dark:placeholder:text-dark-text/40">
+                    </div>
+                    <div>
                         <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Pet Type</label>
                         <select name="pet_type" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
                             <option value="">All Types</option>
-                            <option value="dog">🐕 Dogs</option>
-                            <option value="cat">🐱 Cats</option>
+                            <option value="dog" {% if pet_type == 'dog' %}selected{% endif %}>🐕 Dogs</option>
+                            <option value="cat" {% if pet_type == 'cat' %}selected{% endif %}>🐱 Cats</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Behavior</label>
                         <select name="behavior" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
                             <option value="">Any Behavior</option>
-                            <option value="Calm">🌙 Calm</option>
-                            <option value="Playful">🎈 Playful</option>
-                            <option value="Friendly">💝 Friendly</option>
+                            <option value="Calm" {% if behavior == 'Calm' %}selected{% endif %}>🌙 Calm</option>
+                            <option value="Playful" {% if behavior == 'Playful' %}selected{% endif %}>🎈 Playful</option>
+                            <option value="Friendly" {% if behavior == 'Friendly' %}selected{% endif %}>💝 Friendly</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Size</label>
                         <select name="size" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
                             <option value="">Any Size</option>
-                            <option value="Small">🐱 Small</option>
-                            <option value="Medium">🐶 Medium</option>
-                            <option value="Large">🐕‍🦺 Large</option>
+                            <option value="Small" {% if size == 'Small' %}selected{% endif %}>🐱 Small</option>
+                            <option value="Medium" {% if size == 'Medium' %}selected{% endif %}>🐶 Medium</option>
+                            <option value="Large" {% if size == 'Large' %}selected{% endif %}>🐕‍🦺 Large</option>
                         </select>
                     </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full px-6 py-2.5 bg-primary-light dark:bg-primary text-white font-baloo rounded-xl hover:bg-primary transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                            Search
-                        </button>
+                </div>
+
+                <!-- Distance Filter -->
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Location Source</label>
+                        <select name="loc_mode" id="locMode" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                            <option value="ip" {% if loc_mode == 'ip' %}selected{% endif %}>📍 Use My Location</option>
+                            <option value="manual" {% if loc_mode == 'manual' %}selected{% endif %}>✍️ Enter Address</option>
+                        </select>
                     </div>
+                    <div id="manualAddressDiv" {% if loc_mode != 'manual' %}style="display: none"{% endif %}>
+                        <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Your Address</label>
+                        <input name="manual_address" placeholder="Enter your address" value="{{ manual_address }}"
+                               class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo placeholder:text-light-text/40 dark:placeholder:text-dark-text/40">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Max Distance</label>
+                            <input name="distance" type="number" min="0" step="0.1" placeholder="e.g. 10" value="{{ distance }}"
+                                   class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                        </div>
+                        <div>
+                            <label class="block font-baloo text-sm text-light-text dark:text-dark-text/80 mb-2">Unit</label>
+                            <select name="distance_unit" class="w-full rounded-xl border-pastel-purple dark:border-dark-purple bg-light-card dark:bg-dark-lighter/50 text-light-text dark:text-dark-text shadow-sm focus:border-primary focus:ring-primary font-baloo">
+                                <option value="mi" {% if distance_unit == 'mi' %}selected{% endif %}>Miles</option>
+                                <option value="km" {% if distance_unit == 'km' %}selected{% endif %}>Kilometers</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex justify-end">
+                    <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-primary-light dark:bg-primary text-white font-baloo rounded-xl hover:bg-primary transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        Search
+                    </button>
                 </div>
             </form>
         </div>
@@ -244,6 +280,8 @@
     <script>
         const html = document.documentElement;
         const themeToggle = document.getElementById('themeToggle');
+        const locMode = document.getElementById('locMode');
+        const manualAddressDiv = document.getElementById('manualAddressDiv');
         
         // Check for saved theme preference, otherwise use system preference
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -256,6 +294,11 @@
         themeToggle.addEventListener('click', () => {
             html.classList.toggle('dark');
             localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Toggle manual address input visibility
+        locMode.addEventListener('change', () => {
+            manualAddressDiv.style.display = locMode.value === 'manual' ? 'block' : 'none';
         });
     </script>
 </body>

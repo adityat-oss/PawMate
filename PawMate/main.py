@@ -77,6 +77,7 @@ def petsitter():
     unit        = request.values.get("distance_unit", "mi")
     loc_mode    = request.values.get("loc_mode", "ip")
     manual_addr = request.values.get("manual_address", "").strip()
+    name        = request.values.get("name", "").strip()
 
     # Convert numeric filters
     age_min = int(age_min_str) if age_min_str.isdigit() else None
@@ -90,6 +91,7 @@ def petsitter():
     if behavior:   q = q.filter_by(behavior=behavior)
     if care_level: q = q.filter_by(care_level=care_level)
     if size:       q = q.filter_by(size=size)
+    if name:       q = q.filter(Pet.name.ilike(f"%{name}%"))
     if age_min is not None: q = q.filter(Pet.age >= age_min)
     if age_max is not None: q = q.filter(Pet.age <= age_max)
     candidates = q.all()
@@ -140,6 +142,7 @@ def petsitter():
         distance_unit=unit,
         loc_mode=loc_mode,
         manual_address=manual_addr,
+        name=name,
     )
 
 if __name__ == "__main__":
